@@ -2,15 +2,27 @@
 
   return {
     events: {
-      'app.activated':'doSomething',
-      'app.deactivated':'doSomething',
-      '*.changed':'doSomething',
-      'ticket.submit.done':function() {this.doSomething(this.generateEvent('ticket.submit.done'));},
-      'ticket.save':function() {this.doSomething(this.generateEvent('ticket.save')); return true;},
-      'ticket.submit.always':'doSomething',
+      'app.activated':'aggregateEvent',
+      'app.deactivated':'aggregateEvent',
+      '*.changed':'aggregateEvent',
+      'ticket.submit.done':function() {this.aggregateEvent(this.generateEvent('ticket.submit.done'));},
+      'ticket.save':function() {this.aggregateEvent(this.generateEvent('ticket.save')); return true;},
+      'ticket.submit.always':'aggregateEvent',
     },
 
-    maxUpdateRate: 5000,
+    requests: {
+        pushData: function(data, ticket, agent) {
+            return {
+                url: helpers.fmt("http://cat-bus.herokuapp.com/api/events/ticket/%@/agent/%@.json",
+                     ticket,
+                     agent),
+                type: 'POST',
+                data: JSON.stringify({data: data})
+            }
+        }
+    },
+
+    maxUpdateRate: 10000,
     eventUpdates: [],
     waiting: false,
 
@@ -21,20 +33,18 @@
     aggregateEvent: function(e) {
         if(!this.waiting) {
             this.waiting = true;
-            setTimeout(_.bind(this.postData, this), this.maxUpdateRate);
+            setTimeout(_.bind(this.postData, this, this.ticket().id(), this.currentUser().id()), this.maxUpdateRate);
         }
         this.eventUpdates.push(e);
     },
 
-    doSomething: function(e) {
-        this.aggregateEvent(e);
-    },
-
-    postData: function() {
+    postData: function(ticket, agent) {
         var updates = this.eventUpdates;
         this.eventUpdates = [];
         this.waiting = false;
-        console.log(updates);
+        this.ajax('pushData', updates, ticket, agent).done(function() {
+            console.log('data pushed');
+        });
     }
   };
 
