@@ -2,7 +2,7 @@
 
   return {
 	events: {
-	  'app.activated':'doSomething'
+	  'app.activated':'init'
 	},
 
 	message: {
@@ -31,7 +31,7 @@
 		}]
 	},
 
-	doSomething: function() {
+	init: function() {
 		this.require = require('context_loader')(this);
 		this.require('popmodal')(this.message, _.bind(this.hideApp, this), _.bind(this.hideApp, this));
 	},
