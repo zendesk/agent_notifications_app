@@ -6,6 +6,7 @@
     },
 
     doSomething: function() {
+        this.hide();
     }
   };
 
