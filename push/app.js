@@ -16,7 +16,7 @@
 
     generateEvent(e) {
         return {'propertyName': e, 'timestamp': Date.now()};
-    }
+    },
 
     aggregateEvent: function(e) {
         if(!this.waiting) {
