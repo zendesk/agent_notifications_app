@@ -37,11 +37,12 @@
     inactiveNotifications: [
       {id: 1, name: "I'm inactive", otherStuff: {}},
       {id: 2, name: "No this is boring", otherStuff: {}}
-    ]
+    ],
 
     events: {
       'app.activated':'index',
       'click #newNotification': 'newNotification',
+      'click #cancelCreate': 'index',
       'change .chosen_dropdown': 'show_operation'
     },
 

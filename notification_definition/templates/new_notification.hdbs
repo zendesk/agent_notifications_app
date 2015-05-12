@@ -128,5 +128,6 @@
 <div class="action">
   <input id="rule_type" name="rule[type]" type="hidden" value="Trigger">
   <input id="return_to" name="return_to" type="hidden" value="/rules/triggers?filter=triggers">
+  <button id="cancelCreate">Cancel</button>
   <input class="button primary" name="commit" type="submit" value="Create notification">
 </div>
