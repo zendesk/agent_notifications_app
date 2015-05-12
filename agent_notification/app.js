@@ -2,13 +2,15 @@
 
   return {
 	events: {
-	  'app.activated':'init',
-	  'click .btn-modal':'init'
+		'app.activated':'init',
+		'click .btn-modal':'init'
 	},
 
 	requests: {
 		postTicket: function() {
-			var data = {"ticket":{"custom_fields":[{"id":this.agent_dismissal_field,"value":this.ticket().customField(this.agent_dismissal_string)}]}};
+			var data = {"ticket":{"custom_fields":[{"id":this.agent_dismissal_field,"value":JSON.stringify(this.agent_dismissal)}]}};
+			console.log(data);
+			console.log(JSON.stringify(data));
             return {
                 url: helpers.fmt("/api/v2/tickets/%@.json",this.ticket().id()),
                 type: "PUT",
@@ -16,14 +18,13 @@
                 data: JSON.stringify(data)
             };
 		}
-
 	},
 
 	modal: {
-				header:  'hello2',
-				content: '',
-				confirm: 'confirm',
-				options: '<p><label><input type="checkbox" name="dismiss_messages" /><span id="foo">Don\'t show these messages again.</span></label></p>',
+		header:  'hello2',
+		content: '',
+		confirm: 'confirm',
+		options: '<p><label><input type="checkbox" name="dismiss_messages" /><span id="foo">Don\'t show these messages again.</span></label></p>',
 	},
 
 	init: function() {
@@ -32,19 +33,22 @@
 		this.messages = JSON.parse(this.setting('messages'));
 		this.agent_dismissal_field = this.requirement('agent_dismissal').requirement_id;
 		this.agent_dismissal_string = 'custom_field_' + this.agent_dismissal_field;
+		this.ticketFields(this.agent_dismissal_string).hide();
 		this.agent_dismissal = this.ticket().customField(this.agent_dismissal_string);
-		this.agent_dismissal = this.agent_dismissal ? JSON.parse(this.agent_dismissal) : {}
+		this.agent_dismissal = this.agent_dismissal ? JSON.parse(this.agent_dismissal) : {};
 		this.agent_dismissal = this.agent_dismissal || {};
 		this.cleared_notifications = this.agent_dismissal[this.currentUser().id()] || [];
 		var filteredMessages = this.filterMessages();
 		this.draw(filteredMessages);
-		this.require('popmodal')(this.modal, _.bind(this.dismissMessage, this));
+		if(filteredMessages.length > 0) {
+			this.require('popmodal')(this.modal, _.bind(this.dismissMessage, this));
+		}
 	},
 
 	draw: function(filteredMessages) {
 		var that = this;
 		if(filteredMessages.length > 0) {
-			this.switchTo('main',{count: filteredMessages.length})
+			this.switchTo('main',{count: filteredMessages.length});
 			this.modal.content = filteredMessages.map(function(message) {
 				return message.message;
 			}).reduce(function(prev, curr) {
@@ -66,14 +70,14 @@
 	dismissMessage: function(input) {
 		var filteredMessages = this.filterMessages();
 		var hiddenMessages = this.agent_dismissal[this.currentUser().id()] || [];
-		var hideMessages = (input.length === 1) ? input[0].checked : false
+		var hideMessages = (input.length === 1) ? input[0].checked : false;
 		if(hideMessages) {
-			message_ids = filteredMessages.forEach(function(message) {hiddenMessages.push(message.id)});
+			filteredMessages.forEach(function(message) {hiddenMessages.push(message.id);});
 			this.agent_dismissal[this.currentUser().id()] = _.uniq(hiddenMessages);
 			this.cleared_notifications = _.uniq(hiddenMessages);
+			this.ajax('postTicket');
 		}
 		this.draw(this.filterMessages());
-		this.ajax('postTicket');
 	}
   };
 }());

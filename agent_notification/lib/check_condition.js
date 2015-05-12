@@ -34,7 +34,7 @@ var util = {
 
     attributes: {
         assignee_id: function() {
-            var id = util.appFramework.ticket().assignee().user().id()
+            var id = util.appFramework.ticket().assignee().user().id();
             return id;
         },
 
