@@ -4,11 +4,23 @@
     operators: [
       {
         html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='op_val' type='text' />",
-        qualifiers:["status_id","ticket_type_id","priority_id","requester_id","assignee_id","organization_id"]
+        qualifiers:["requester_id","assignee_id","organization_id"]
       },
       {
         html:"<select><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
         qualifiers:["current_tags"]
+      },
+      {
+        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option>-</option><option value='question'>Question</option><option value='incident'>Incident</option><option value='problem'>Problem</option><option value='task'>Task</option></select>",
+        qualifiers:["ticket_type_id"]
+      },
+      {
+        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option value='new'>New</option><option value='open'>Open</option><option value='pending'>Pending</option><option value='solved'>Solved</option><option value='closed'>Closed</option>",
+        qualifiers:["status_id"]
+      },
+      {
+        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option>-</option><option value='low'>Low</option><option value='normal'>Normal</option><option value='high'>High</option><option value='urgent'>Urgent</option></select>",
+        qualifiers:["priority_id"]
       }
     ],
 
