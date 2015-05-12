@@ -168,12 +168,14 @@
 			this.messages = this.setting('messages') ? JSON.parse(this.setting('messages')) : [];
 			if(this.currentLocation() == "ticket_sidebar") {
 				this.init();
-			} else {
+			} else if(this.currentUser().role() == "admin") {
 				var notifications = {
 					active: this.messages.filter(function(setting) { return setting.active; }),
 					inactive: this.messages.filter(function(setting) { return !setting.active; })
 				};
 				this.switchTo('index', notifications);
+			} else {
+				this.hide();
 			}
 		},
 
