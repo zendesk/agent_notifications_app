@@ -3,11 +3,11 @@
   return {
     operators: [
       {
-        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='opVal' type='text' />",
+        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='op_val' type='text' />",
         qualifiers:["status_id","ticket_type_id","priority_id","requester_id","assignee_id","organization_id"]
       },
       {
-        html:"<select><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='opVal' type='text' />",
+        html:"<select><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
         qualifiers:["current_tags"]
       }
     ],
@@ -52,7 +52,8 @@
     allConditionsCounter: 0,
     anyConditionsCounter: 0,
 
-    index: function() {
+    index: function(e) {
+      e.preventDefault();
       var notifications = {
         active: this.activeNotifications,
         inactive: this.inactiveNotifications
@@ -96,13 +97,13 @@
         return item.qualifiers.indexOf(current_option) > -1;
       });
       var op_html = op_obj[0].html;
-      var inserted = this.$(target).parent().children(".opAndValue").html(op_html);
+      var inserted = this.$(target).parent().children(".op_and_value").html(op_html);
       if (current_option == 'requester_id' || current_option == 'assignee_id') {
-        this.$(inserted).children("input.opVal").addClass('autocomplete_user');
+        this.$(inserted).children("input.op_val").addClass('autocomplete_user');
         this.autocompleteRequesterName();
       }
       if (current_option == 'organization_id') {
-        this.$(inserted).children("input.opVal").addClass('autocomplete_org');
+        this.$(inserted).children("input.op_val").addClass('autocomplete_org');
         this.autocompleteOrganizationName();
       }
     },
