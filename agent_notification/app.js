@@ -180,7 +180,8 @@
 			}
 		},
 
-		index: function() {
+		index: function(e) {
+			e.preventDefault();
 			var that = this;
 			this.ajax('getAppSettings').done(function(data) {
 				that.messages = data.settings.messages ? JSON.parse(data.settings.messages) : [];
