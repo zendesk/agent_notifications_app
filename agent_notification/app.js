@@ -87,7 +87,7 @@
 		init: function() {
 			var that = this;
 			this.require = require('context_loader')(this);
-			this.messages = JSON.parse(this.setting('messages'));
+			this.messages = this.setting('messages') ? JSON.parse(this.setting('messages')) : [];
 			this.agent_dismissal_field = this.requirement('agent_dismissal').requirement_id;
 			this.agent_dismissal_string = 'custom_field_' + this.agent_dismissal_field;
 			this.ticketFields(this.agent_dismissal_string).hide();
