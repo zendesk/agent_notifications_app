@@ -10,7 +10,9 @@
 			'click #addAllCondition': 'addAllCondition',
 			'click #addAnyCondition': 'addAnyCondition',
 			'click .remove_condition': 'removeCondition',
-			'click #subNotification': 'submitNotification'
+			'click #subNotification': 'submitNotification',
+			'click .list_action.edit': 'editNotification',
+			'click #saveNotification': 'submitNotification'
 		},
 
 		allConditionsCounter: 0,
@@ -154,15 +156,17 @@
 			this.draw(this.unreadMessages());
 		},
 
-		activated: function() {
+		activated: function(e) {
 			if(this.currentLocation() == "ticket_sidebar") {
 				this.init();
 			} else {
-				this.index();
+				this.index(e);
 			}
 		},
 
-		index: function() {
+		index: function(e) {
+			e.preventDefault();
+
 			var setting = this.setting('messages');
 			var setting_array = setting ? JSON.parse(setting) : [];
 
@@ -181,6 +185,18 @@
 			this.anyConditionsCounter = 0;
 
 			this.switchTo('new_notification', null);
+		},
+
+		editNotification: function(e) {
+			e.preventDefault();
+
+			var id = this.$(e.currentTarget).data('id');
+			var setting = this.setting('messages');
+			var setting_array = setting ? JSON.parse(setting) : [];
+
+			var notification = _.findWhere(setting_array, {id: id});
+
+			this.switchTo('edit_notification', notification);
 		},
 
 		addAllCondition: function(e) {
@@ -221,6 +237,7 @@
 				this.$(inserted).children("input.op_val").addClass('autocomplete_org');
 				this.autocompleteOrganizationName(parent_id);
 			}
+			this.$(inserted).trigger('opAndValueInserted');
 		},
 
 		submitNotification: function() {
