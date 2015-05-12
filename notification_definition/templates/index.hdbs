@@ -2,7 +2,7 @@
   <dt class="list_title">Active notifications ({{active.length}})<a href="#" id="newNotification" class="right">add notification</a></dt>
   {{#each active}}
     <dd class="list_item">
-      <span class="item_name">{{name}}</span>
+      <span class="item_name">{{title}}</span>
       <div class="right actions">
         <div class="hover_actions">
           <a href="#" class="list_action deactivate" data-id="{{id}}">deactivate | </a>
@@ -17,7 +17,7 @@
   <dt class="list_title">Inactive notifications ({{inactive.length}})</dt>
   {{#each inactive}}
     <dd class="list_item">
-      <span class="item_name">{{name}}</span>
+      <span class="item_name">{{title}}</span>
       <div class="right actions">
         <div class="hover_actions">
           <a href="#" class="list_action delete" data-id="{{id}}">delete | </a>

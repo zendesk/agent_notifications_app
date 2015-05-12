@@ -65,9 +65,13 @@
 
     index: function(e) {
       e.preventDefault();
+
+      var setting = this.setting('messages');
+      var setting_array = setting ? JSON.parse(setting) : [];
+
       var notifications = {
-        active: this.activeNotifications,
-        inactive: this.inactiveNotifications
+        active: setting_array,
+        inactive: []
       };
 
       this.switchTo('index', notifications);
