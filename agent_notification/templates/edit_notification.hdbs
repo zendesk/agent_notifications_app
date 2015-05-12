@@ -86,8 +86,10 @@
     var selectedOperator = $(target).data('operator');
     var operatorValue = $(target).data('value');
 
-    $(operatorSelect).val(selectedOperator);
-    $(operatorField).val(operatorValue);
+    if(selectedOperator && operatorValue) {
+      $(operatorSelect).val(selectedOperator);
+      $(operatorField).val(operatorValue);
+    }
   });
 
   $('#all_conditions, #any_conditions > fieldset').each(function(i, el) {
