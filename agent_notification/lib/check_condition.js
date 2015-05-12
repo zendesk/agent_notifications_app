@@ -15,6 +15,14 @@ var util = {
             return value1 !== value2;
         },
 
+        includes: function(list, value) {
+            return _.contains(list, value);
+        },
+
+        not_includes: function(list, value) {
+            return !_.contains(list, value);
+        }
+
         any: function(conditions) {
             var result = true;
             conditions.forEach(function(condition) {
@@ -38,7 +46,7 @@ var util = {
             return id;
         },
 
-        current_user: function() {
+        user_id: function() {
             var id =  util.appFramework.currentUser().id();
             return id;
         },
@@ -56,6 +64,30 @@ var util = {
         status: function() {
             var status = util.appFramework.ticket().status();
             return status;
+        },
+
+        requester_id: function() {
+            return util.appFramework.ticket().requester().id();
+        },
+
+        current_tags: function() {
+            return util.appFramework.ticket().tags();
+        },
+
+        priority: function() {
+            return util.appFramework.ticket().priority();
+        },
+
+        organization_id: function() {
+            return util.appFramework.ticket().organization().id();
+        },
+
+        ticket_id: function() {
+            return util.appFramework.ticket().id();
+        },
+
+        ticket_type: function() {
+            return util.appFramework.ticket().type();
         }
     },
 
