@@ -97,20 +97,23 @@
         return item.qualifiers.indexOf(current_option) > -1;
       });
       var op_html = op_obj[0].html;
+      var parent = this.$(target).parent()[0];
+      var parent_id = this.$(parent).attr('id');
       var inserted = this.$(target).parent().children(".op_and_value").html(op_html);
       if (current_option == 'requester_id' || current_option == 'assignee_id') {
         this.$(inserted).children("input.op_val").addClass('autocomplete_user');
-        this.autocompleteRequesterName();
+        this.autocompleteRequesterName(parent_id);
       }
       if (current_option == 'organization_id') {
         this.$(inserted).children("input.op_val").addClass('autocomplete_org');
-        this.autocompleteOrganizationName();
+        this.autocompleteOrganizationName(parent_id);
       }
     },
 
-    autocompleteRequesterName: function() {
+    autocompleteRequesterName: function(parent_id) {
       var self = this;
-      this.$('.autocomplete_user').autocomplete({
+      var selector = helpers.fmt('#%@ .autocomplete_user', parent_id);
+      this.$(selector).autocomplete({
         minLength: 3,
         source: function(request, response){
           self.ajax('autocompleteRequester', request.term).done(function(data){
@@ -124,18 +127,19 @@
         },
         select: function(event, ui) {
           event.preventDefault();
-          self.$('.autocomplete_user').val(ui.item.label);
+          self.$(selector).val(ui.item.label);
         },
         focus: function(event, ui) {
           event.preventDefault();
-          self.$('.autocomplete_user').val(ui.item.label);
+          self.$(selector).val(ui.item.label);
         }
       }, this);
     },
 
-    autocompleteOrganizationName: function() {
+    autocompleteOrganizationName: function(parent_id) {
       var self = this;
-      this.$('.autocomplete_org').autocomplete({
+      var selector = helpers.fmt('#%@ .autocomplete_org', parent_id);
+      this.$(selector).autocomplete({
         minLength: 3,
         source: function(request, response){
           self.ajax('autocompleteOrganization', request.term).done(function(data){
@@ -149,11 +153,11 @@
         },
         select: function(event, ui) {
           event.preventDefault();
-          self.$('.autocomplete_org').val(ui.item.label);
+          self.$(selector).val(ui.item.label);
         },
         focus: function(event, ui) {
           event.preventDefault();
-          self.$('.autocomplete_org').val(ui.item.label);
+          self.$(selector).val(ui.item.label);
         }
       }, this);
     }
