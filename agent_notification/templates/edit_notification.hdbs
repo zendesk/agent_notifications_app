@@ -81,7 +81,12 @@
 <script type="application/javascript">
   $('#all_conditions, #any_conditions').on('opAndValueInserted', '.op_and_value', function() {
     var target = $(this);
+    var chosenField = $(target).parent().find('.chosen_dropdown')[0];
+    var field_value = $(chosenField).val();
     var operatorSelect = $(target).find('.operator')[0];
+    if(field_value == 'assignee_id' || field_value == 'requester_id' || field_value == 'organization_id'){
+      var operatorHiddenField = $($(target).find('.op_val')[0]).next('span');
+    }
     var operatorField = $(target).find('.op_val')[0];
     var selectedOperator = $(target).data('operator');
     var operatorValue = $(target).data('value');
@@ -89,6 +94,7 @@
     if(selectedOperator && operatorValue) {
       $(operatorSelect).val(selectedOperator);
       $(operatorField).val(operatorValue);
+      if(operatorHiddenField) operatorHiddenField.text(operatorValue);
     }
   });
 
