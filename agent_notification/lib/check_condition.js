@@ -21,7 +21,7 @@ var util = {
 
         not_includes: function(list, value) {
             return !_.contains(list, value);
-        }
+        },
 
         any: function(conditions) {
             var result = true;
