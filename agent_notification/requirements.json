@@ -1,0 +1,9 @@
+{  
+  "ticket_fields": {
+    "agent_dismissal": {
+      "type": "text",
+      "title": "Hidden Notifications",
+      "description": "List of messages that agents have dismissed."
+    }
+  }
+}
