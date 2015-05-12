@@ -12,7 +12,7 @@
 			'click .remove_condition': 'removeCondition',
 			'click #subNotification': 'submitNotification',
 			'click .list_action.edit': 'editNotification',
-			'click #saveNotification': 'submitNotification'
+			'click #saveNotification': 'submitNotification',
 			'click .deactivate': 'deactivateNotification',
 		},
 
