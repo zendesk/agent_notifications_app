@@ -296,7 +296,7 @@
 				}
 			};
 			var valid_notification = this.validateNotification(notification);
-			if(valid_notification == true) {
+			if(valid_notification === true) {
 				this.ajax(
 					'saveToAppSettings',
 					payload,
@@ -317,18 +317,18 @@
 				return false;
 			}
 
-			if (notification.message == "") {
+			if (notification.message === "") {
 				services.notify('There must be a message in order to create a notification.', 'error');
 				return false;
 			}
 
-			if (notification.title == "") {
+			if (notification.title === "") {
 				services.notify('There must be a title in order to create a notification.', 'error');
 				return false;
 			}
 
 			var null_val = _.filter(notification, function(item){
-				return item.value == "" || isNaN(item.value) == true;
+				return item.value === "" || isNaN(item.value) === true;
 			});
 			if (null_val.length > 0) {
 				services.notify('A value cannot be blank.','error');
