@@ -3,7 +3,7 @@
   return {
 	events: {
 		'app.activated':'init',
-		'click .btn-modal':'init'
+		'click .btn-modal':'popModal'
 	},
 
 	requests: {
@@ -24,7 +24,7 @@
 		header:  'hello2',
 		content: '',
 		confirm: 'confirm',
-		options: '<p><label><input type="checkbox" name="dismiss_messages" /><span id="foo">Don\'t show these messages again.</span></label></p>',
+		options: '<p><input type="checkbox" id="dismiss_messages"/><label for="dismiss_messages">Mark messages as read.</label></p>',
 	},
 
 	init: function() {
@@ -38,18 +38,27 @@
 		this.agent_dismissal = this.agent_dismissal ? JSON.parse(this.agent_dismissal) : {};
 		this.agent_dismissal = this.agent_dismissal || {};
 		this.cleared_notifications = this.agent_dismissal[this.currentUser().id()] || [];
-		var filteredMessages = this.filterMessages();
-		this.draw(filteredMessages);
-		if(filteredMessages.length > 0) {
+		this.draw();
+		if(this.unreadMessages().length > 0)
+		{
+			this.popModal();
+		}
+	},
+
+	popModal: function() {
+		var ticketMessages = this.ticketMessages();
+		if(ticketMessages.length > 0) {
 			this.require('popmodal')(this.modal, _.bind(this.dismissMessage, this));
 		}
 	},
 
-	draw: function(filteredMessages) {
+	draw: function() {
 		var that = this;
-		if(filteredMessages.length > 0) {
-			this.switchTo('main',{count: filteredMessages.length});
-			this.modal.content = filteredMessages.map(function(message) {
+		var filteredMessages = this.unreadMessages();
+		var ticketMessages = this.ticketMessages();
+		if(ticketMessages.length > 0) {
+			this.switchTo('main',{unread: filteredMessages.length, count:ticketMessages.length});
+			this.modal.content = ticketMessages.map(function(message) {
 				return message.message;
 			}).reduce(function(prev, curr) {
 				return prev.concat(curr);
@@ -59,7 +68,7 @@
 		}
 	},
 
-	filterMessages: function() {
+	unreadMessages: function() {
 		var that = this;
 		var checkConditions = this.require('check_condition');
 		return this.messages.filter(function(message) {
@@ -67,8 +76,16 @@
 		});
 	},
 
+	ticketMessages: function() {
+		var that = this;
+		var checkConditions = this.require('check_condition');
+		return this.messages.filter(function(message) {
+			return checkConditions(message.conditions);
+		});
+	},
+
 	dismissMessage: function(input) {
-		var filteredMessages = this.filterMessages();
+		var filteredMessages = this.unreadMessages();
 		var hiddenMessages = this.agent_dismissal[this.currentUser().id()] || [];
 		var hideMessages = (input.length === 1) ? input[0].checked : false;
 		if(hideMessages) {
@@ -77,7 +94,7 @@
 			this.cleared_notifications = _.uniq(hiddenMessages);
 			this.ajax('postTicket');
 		}
-		this.draw(this.filterMessages());
+		this.draw(this.unreadMessages());
 	}
   };
 }());

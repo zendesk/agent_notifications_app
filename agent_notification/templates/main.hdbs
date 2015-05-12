@@ -1,1 +1,1 @@
-<p>You have {{count}} messages for this ticket: <button class="btn-modal">Show</button></p>
+<p>You have {{count}} messages for this ticket, {{unread}} of them are new: <button class="btn-modal">Show</button></p>
