@@ -154,3 +154,21 @@ span.invert {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+#dismiss_messages {
+  display: inline-block;
+}
+.modal-header {
+  text-align: center;
+  font-weight: 600;
+}
+.modal-body p {
+  border-bottom: 1px dotted #ccc;
+  margin-bottom: 10px;
+}
+#sidebar_well p {
+  width: 100%;
+}
+.modal-footer p {
+  display: inline-block;
+  margin-right: 10px;
+}

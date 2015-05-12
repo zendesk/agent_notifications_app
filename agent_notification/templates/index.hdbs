@@ -1,3 +1,4 @@
+<div class="app_content">
 <dl class="notifications_list">
   <dt class="list_title">Active notifications ({{active.length}})<a href="#" id="newNotification" class="right">add notification</a></dt>
   {{#each active}}
@@ -28,3 +29,4 @@
     </dd>
   {{/each}}
 </dl>
+</div>
