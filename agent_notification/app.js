@@ -54,10 +54,6 @@
 		}
 	],
 
-	
-
-	
-
 	init: function() {
 		var that = this;
 		this.require = require('context_loader')(this);

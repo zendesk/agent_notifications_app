@@ -66,8 +66,7 @@ var util = {
             var value2 = condition.value || util.attributes[condition.field2]();
             return operator(value1, value2); 
         }); 
-    }
-    
+    }  
 };
 
 module.exports = {
