@@ -208,12 +208,14 @@
 			e.preventDefault();
 
 			var id = this.$(e.currentTarget).data('id');
-			var setting = this.setting('messages');
-			var setting_array = setting ? JSON.parse(setting) : [];
-
-			var notification = _.findWhere(setting_array, {id: id});
-
-			this.switchTo('edit_notification', notification);
+			this.ajax('getAppSettings').done(function(data) {
+				var setting_array = JSON.parse(data.settings.messages);
+				var index = _.findIndex(setting_array, function(notification) {
+					return notification.id == id;
+				});
+				var notification = setting_array[index];
+				this.switchTo('edit_notification', notification);
+			});
 		},
 
 		addAllCondition: function(e) {
@@ -345,7 +347,7 @@
 			var setting_array = setting ? JSON.parse(setting) : [];
 			console.log(setting_array);
 			var match = _.findIndex(setting_array, function(item){
-				return item.id === notification.id;
+				return item.id == notification.id;
 			});
 			console.log(match);
 			console.log(setting_array[match]);
