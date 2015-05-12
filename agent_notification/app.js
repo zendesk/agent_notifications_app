@@ -326,14 +326,30 @@
 				services.notify('There must be a title in order to create a notification.', 'error');
 				return false;
 			}
+			var conditions = notification.conditions;
+			var all_conditions = conditions.any.concat(conditions.all);
+			console.log(all_conditions);
 
-			var null_val = _.filter(notification, function(item){
-				return item.value === "" || isNaN(item.value) === true;
+			var null_val = _.filter(all_conditions, function(item){
+				return item.value === "" || item.value === "-";
 			});
+
 			if (null_val.length > 0) {
 				services.notify('A value cannot be blank.','error');
 				return false;
 			}
+
+			var null_num = _.filter(all_conditions, function(item) {
+				if(item.field === 'assignee_id' || item.field === 'requester_id' || item.field === 'organization_id') {
+					return isNaN(item.value);
+				}
+			});
+
+			if (null_num.length > 0) {
+				services.notify('A user or organization value cannot be blank.','error');
+				return false;
+			}
+
 			return true;
 
 		},
