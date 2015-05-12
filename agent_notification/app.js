@@ -14,6 +14,8 @@
 			'click .list_action.edit': 'editNotification',
 			'click #saveNotification': 'submitNotification',
 			'click .deactivate': 'deactivateNotification',
+			'click .activate': 'activateNotification',
+			'click .delete': 'deleteNotification',
 		},
 
 		allConditionsCounter: 0,
@@ -191,8 +193,50 @@
 
 		deactivateNotification: function(e) {
 			e.preventDefault();
-			console.log(parseInt(this.$(e.currentTarget).attr('data-id'), 10));
-			console.log(this.$(e.currentTarget));
+			var that = this;
+			var id = this.$(e.currentTarget).data('id');
+			this.ajax('getAppSettings').done(function(data) {
+				var setting_array = JSON.parse(data.settings.messages);
+				var index = _.findIndex(setting_array, function(notification) {
+					return notification.id == id;
+				});
+				var notification = setting_array[index];
+				notification.active = false;
+				that.saveToSettings(notification, data.settings.messages);
+			});
+		},
+
+		activateNotification: function(e) {
+			e.preventDefault();
+			var that = this;
+			var id = this.$(e.currentTarget).data('id');
+			this.ajax('getAppSettings').done(function(data) {
+				var setting_array = JSON.parse(data.settings.messages);
+				var index = _.findIndex(setting_array, function(notification) {
+					return notification.id == id;
+				});
+				var notification = setting_array[index];
+				notification['active'] = true;
+				console.log('edited');
+				console.log(notification);
+				that.saveToSettings(notification, data.settings.messages);
+			});
+		},
+
+		deleteNotification: function(e) {
+			e.preventDefault();
+			var that = this;
+			var id = this.$(e.currentTarget).data('id');
+			this.ajax('getAppSettings').done(function(data) {
+				var setting_array = JSON.parse(data.settings.messages);
+				var index = _.findIndex(setting_array, function(notification) {
+					return notification.id == id;
+				});
+				var notification = setting_array[index];
+				console.log('edited');
+				console.log(notification);
+				that.deleteFromSettings(notification, data.settings.messages);
+			});
 		},
 
 		newNotification: function(e) {
@@ -372,12 +416,37 @@
 					payload,
 					installID
 				).done(function(data) {
-					services.notify('Successfully saved new notification!', 'notice');
+					services.notify('Successfully saved notification!', 'notice');
 					self.index();
 				}).fail(function() {
 					services.notify('Failed to save the notification. Please refresh your browser and try again.', 'error');
 				});
 			}
+		},
+
+		deleteFromSettings: function(notification, setting) {
+			var self = this;
+			var installID = this.installationId();
+			var setting_array = setting ? JSON.parse(setting) : [];
+			setting_array = _.reject(setting_array, function(item){
+				return item.id == notification.id;
+			});
+			var new_settings = JSON.stringify(setting_array);
+			var payload = {
+				"settings":{
+					"messages": new_settings
+				}
+			};
+			this.ajax(
+					'saveToAppSettings',
+					payload,
+					installID
+			).done(function(data) {
+					services.notify('Successfully deleted notification!', 'notice');
+					self.index();
+			}).fail(function() {
+					services.notify('Failed to save the notification. Please refresh your browser and try again.', 'error');
+			});
 		},
 
 		validateNotification: function(notification) {
