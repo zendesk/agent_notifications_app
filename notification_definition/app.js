@@ -3,11 +3,11 @@
   return {
     operators: [
       {
-        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='op_val' type='text' />",
+        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='op_val' type='text' />",
         qualifiers:["status_id","ticket_type_id","priority_id","requester_id","assignee_id","organization_id"]
       },
       {
-        html:"<select><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
+        html:"<select class='operator'><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
         qualifiers:["current_tags"]
       }
     ],
@@ -46,7 +46,9 @@
       'change .chosen_dropdown': 'show_operation',
       'click #addAllCondition': 'addAllCondition',
       'click #addAnyCondition': 'addAnyCondition',
-      'click .remove_condition': 'removeCondition'
+      'click .remove_condition': 'removeCondition',
+      'click #subNotification': 'submitNotification'
+
     },
 
     allConditionsCounter: 0,
@@ -109,6 +111,58 @@
         this.$(inserted).children("input.op_val").addClass('autocomplete_org');
         this.autocompleteOrganizationName(parent_id);
       }
+    },
+
+    submitNotification: function() {
+      var self = this;
+      var title = this.$("#notificationTitle").val();
+      var message = this.$("#notificationContent").val();
+      var all_conditions_html = this.$("div #all_conditions fieldset");
+      var any_conditions_html = this.$("div #any_conditions fieldset");
+      var conditions = {
+        all: [],
+        any: []
+      };
+      _.each(all_conditions_html, function(item){
+        var field = self.$(item).find('select.chosen_dropdown').val();
+        var operator = self.$(item).find('div.op_and_value .operator').val();
+        if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
+          var value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
+          value = parseInt(value, 10);
+        }
+        else {
+          var value = self.$(item).find('div.op_and_value .op_val').val();
+        }
+        var condition_object = {
+          "field": field,
+          "operator": operator,
+          "value": value
+        };
+        conditions.all.push(condition_object);
+      });
+      _.each(any_conditions_html, function(item){
+        var field = self.$(item).find('select.chosen_dropdown').val();
+        var operator = self.$(item).find('div.op_and_value .operator').val();
+        if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
+          var value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
+          value = parseInt(value, 10);
+        }
+        else {
+          var value = self.$(item).find('div.op_and_value .op_val').val();
+        }
+        var condition_object = {
+          "field": field,
+          "operator": operator,
+          "value": value
+        };
+        conditions.any.push(condition_object);
+      });
+      var notification = {};
+      notification.id = Date.now();
+      notification.title = title;
+      notification.message = message;
+      notification.conditions = conditions;
+      console.log(JSON.stringify(notification));
     },
 
     autocompleteRequesterName: function(parent_id) {

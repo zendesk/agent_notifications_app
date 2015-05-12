@@ -1,7 +1,7 @@
 <input name="utf8" type="hidden" value="✓">
 
 <h2>Notification title</h2>
-<input class="title" type="text" value="">
+<input id="notificationTitle" class="title" type="text" value="">
 
 <div class="frame rule_conditions">
   <h3 class="rule_conditions">Meet <span class="invert">all</span> of the following conditions:</h3>
@@ -67,5 +67,5 @@
   <input id="rule_type" name="rule[type]" type="hidden" value="Trigger">
   <input id="return_to" name="return_to" type="hidden" value="/rules/triggers?filter=triggers">
   <a href="#" id="cancelCreate">Cancel</a>
-  <input class="button primary" name="commit" type="submit" value="Create notification">
+  <input id="subNotification" class="button primary" name="commit" type="button" value="Create notification">
 </div>
