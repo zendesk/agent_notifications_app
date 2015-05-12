@@ -24,8 +24,6 @@
 		requests: {
 			postTicket: function() {
 				var data = {"ticket":{"custom_fields":[{"id":this.agent_dismissal_field,"value":JSON.stringify(this.agent_dismissal)}]}};
-				console.log(data);
-				console.log(JSON.stringify(data));
 				return {
 					url: helpers.fmt("/api/v2/tickets/%@.json",this.ticket().id()),
 					type: "PUT",
@@ -217,8 +215,6 @@
 				});
 				var notification = setting_array[index];
 				notification['active'] = true;
-				console.log('edited');
-				console.log(notification);
 				that.saveToSettings(notification, data.settings.messages);
 			});
 		},
@@ -233,8 +229,6 @@
 					return notification.id == id;
 				});
 				var notification = setting_array[index];
-				console.log('edited');
-				console.log(notification);
 				that.deleteFromSettings(notification, data.settings.messages);
 			});
 		},
@@ -389,26 +383,20 @@
 			var self = this;
 			var installID = this.installationId();
 			var setting_array = setting ? JSON.parse(setting) : [];
-			console.log(setting_array);
 			var match = _.findIndex(setting_array, function(item){
 				return item.id == notification.id;
 			});
-			console.log(match);
-			console.log(setting_array[match]);
-			console.log(notification);
 			if(match > -1) {
 				setting_array[match] = notification;
 			} else {
 				setting_array.push(notification);
 			}
-			console.log(setting_array);
 			var new_settings = JSON.stringify(setting_array);
 			var payload = {
 				"settings":{
 					"messages": new_settings
 				}
 			};
-			console.log(payload);
 			var valid_notification = this.validateNotification(notification);
 			if(valid_notification === true) {
 				this.ajax(
