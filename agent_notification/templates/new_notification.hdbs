@@ -9,7 +9,7 @@
   <div id="all_conditions">
     <fieldset class="conditions" id="all_condition_0">
       <select class="chosen_dropdown" style="width: 225px;">
-        <option>-- Click to select condition. --</option>
+        <option value="-">-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
         <option value="ticket_id">Ticket: ID</option>
         <option value="status">Ticket: Status</option>
@@ -36,7 +36,7 @@
   <div id="any_conditions">
     <fieldset class="conditions" id="any_condition_0">
       <select class="chosen_dropdown" style="width: 225px;">
-        <option>-- Click to select condition. --</option>
+        <option value="-">-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
         <option value="ticket_id">Ticket: ID</option>
         <option value="status">Ticket: Status</option>
