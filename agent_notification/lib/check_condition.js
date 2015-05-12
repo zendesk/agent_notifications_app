@@ -24,7 +24,8 @@ var util = {
         },
 
         includes_all: function(ticket, condition) {
-            return _.intersection(ticket, condition.trim().split(' ')).length === ticket.length;
+            var conditions = condition.trim().split(' ');
+            return _.intersection(ticket, conditions).length === conditions.length;
         },
 
         any: function(conditions) {
