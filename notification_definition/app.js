@@ -3,11 +3,11 @@
   return {
     operators: [
       {
-        html:"<select><option>is</option></select>",
-        qualifiers:["assignee_id","organization_id"]
+        html:"<select><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='opVal' type='text' />",
+        qualifiers:["status_id","ticket_type_id","priority_id","requester_id","assignee_id","organization_id"]
       },
       {
-        html:"<select><option>includes</option></select>",
+        html:"<select><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='opVal' type='text' />",
         qualifiers:["current_tags"]
       }
     ],
@@ -66,8 +66,6 @@
     newNotification: function(e) {
       e.preventDefault();
       this.switchTo('new_notification', null);
-      this.autocompleteRequesterName();
-      this.autocompleteOrganizationName();
     },
 
     addAllCondition: function(e) {
@@ -91,13 +89,27 @@
 
     show_operation: function(e) {
     	e.preventDefault();
+      var selected = e.currentTarget;
       var current_option = e.currentTarget.value;
-      console.log(current_option);
+      var target = this.$(selected)[0];
+      var op_obj = _.filter(this.operators, function(item){
+        return item.qualifiers.indexOf(current_option) > -1;
+      });
+      var op_html = op_obj[0].html;
+      var inserted = this.$(target).parent().children(".opAndValue").html(op_html);
+      if (current_option == 'requester_id' || current_option == 'assignee_id') {
+        this.$(inserted).children("input.opVal").addClass('autocomplete_user');
+        this.autocompleteRequesterName();
+      }
+      if (current_option == 'organization_id') {
+        this.$(inserted).children("input.opVal").addClass('autocomplete_org');
+        this.autocompleteOrganizationName();
+      }
     },
 
     autocompleteRequesterName: function() {
       var self = this;
-      this.$('#user_auto').autocomplete({
+      this.$('.autocomplete_user').autocomplete({
         minLength: 3,
         source: function(request, response){
           self.ajax('autocompleteRequester', request.term).done(function(data){
@@ -111,18 +123,18 @@
         },
         select: function(event, ui) {
           event.preventDefault();
-          self.$('#user_auto').val(ui.item.label);
+          self.$('.autocomplete_user').val(ui.item.label);
         },
         focus: function(event, ui) {
           event.preventDefault();
-          self.$('#user_auto').val(ui.item.label);
+          self.$('.autocomplete_user').val(ui.item.label);
         }
       }, this);
     },
 
     autocompleteOrganizationName: function() {
       var self = this;
-      this.$('#org_auto').autocomplete({
+      this.$('.autocomplete_org').autocomplete({
         minLength: 3,
         source: function(request, response){
           self.ajax('autocompleteOrganization', request.term).done(function(data){
@@ -136,11 +148,11 @@
         },
         select: function(event, ui) {
           event.preventDefault();
-          self.$('#org_auto').val(ui.item.label);
+          self.$('.autocomplete_org').val(ui.item.label);
         },
         focus: function(event, ui) {
           event.preventDefault();
-          self.$('#org_auto').val(ui.item.label);
+          self.$('.autocomplete_org').val(ui.item.label);
         }
       }, this);
     }
