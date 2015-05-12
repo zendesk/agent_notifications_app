@@ -89,10 +89,10 @@
 		],
 
 		modal: {
-			header:  'hello2',
+			header:  'Notification',
 			content: '',
 			confirm: 'confirm',
-			options: '<p><input type="checkbox" id="dismiss_messages"/><label for="dismiss_messages">Mark messages as read.</label></p>',
+			options: '<p><label for="dismiss_messages">Mark messages as read: <input type="checkbox" id="dismiss_messages"/></label></p>',
 		},
 
 		init: function() {
@@ -127,7 +127,8 @@
 			if(ticketMessages.length > 0) {
 				this.switchTo('main',{unread: filteredMessages.length, count:ticketMessages.length});
 				this.modal.content = ticketMessages.map(function(message) {
-					return message.message;
+					var html_string = helpers.fmt('<p>%@</p>', message.message);
+					return html_string;
 				}).reduce(function(prev, curr) {
 					return prev.concat(curr);
 				});

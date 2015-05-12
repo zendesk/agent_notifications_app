@@ -1,3 +1,4 @@
+<div class="app_content">
 <input name="utf8" type="hidden" value="✓">
 
 <h2>Notification title</h2>
@@ -70,4 +71,5 @@
   <input id="return_to" name="return_to" type="hidden" value="/rules/triggers?filter=triggers">
   <a href="#" id="cancelCreate">Cancel</a>
   <input id="subNotification" class="button primary" name="commit" type="button" value="Create notification">
+</div>
 </div>

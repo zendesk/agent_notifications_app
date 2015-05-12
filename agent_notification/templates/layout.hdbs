@@ -3,9 +3,8 @@
   <h3>{{setting "name"}}</h3>
 </header>
 
-<div class="app_content">
+
   <section data-main/>
-</div>
 
 <div class="modal hide fade mymodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header modalHeaderPosition">
