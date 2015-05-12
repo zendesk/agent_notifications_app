@@ -42,6 +42,8 @@
     </fieldset>
 
     <h3 style="margin-top:15px;" class="rule_conditions">Meet <span class="invert">any</span> of the following conditions:</h3>
+    <label for="user_auto">Users:<input type="text" id="user_auto" /></label>
+    <label for="org_auto">Orgs:<input type="text" id="org_auto" /></label>
 
     <div id="2_condition">
       <fieldset class="conditions" id="2_condition_1">
