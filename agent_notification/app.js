@@ -154,17 +154,15 @@
 			this.draw(this.unreadMessages());
 		},
 
-		activated: function(e) {
+		activated: function() {
 			if(this.currentLocation() == "ticket_sidebar") {
 				this.init();
 			} else {
-				this.index(e);
+				this.index();
 			}
 		},
 
-		index: function(e) {
-			e.preventDefault();
-
+		index: function() {
 			var setting = this.setting('messages');
 			var setting_array = setting ? JSON.parse(setting) : [];
 
@@ -280,6 +278,7 @@
 		},
 
 		saveToSettings: function(notification) {
+			var self = this;
 			var installID = this.installationId();
 			var setting = this.setting('messages');
 			var setting_array = setting ? JSON.parse(setting) : [];
@@ -290,8 +289,15 @@
 					"messages": new_settings
 				}
 			};
-			this.ajax('saveToAppSettings', payload, installID).done(function(data){
-				services.notify('successfully updated app with new notification!', 'notice');
+			this.ajax(
+				'saveToAppSettings',
+				payload,
+				installID
+			).done(function(data) {
+				services.notify('Successfully saved new notification!', 'notice');
+				self.index();
+			}).fail(function() {
+				services.notify('Failed to save the notification. Please refresh your browser and try again.', 'error');
 			});
 		},
 
