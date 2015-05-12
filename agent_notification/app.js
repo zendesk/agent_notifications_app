@@ -10,7 +10,8 @@
 			'click #addAllCondition': 'addAllCondition',
 			'click #addAnyCondition': 'addAnyCondition',
 			'click .remove_condition': 'removeCondition',
-			'click #subNotification': 'submitNotification'
+			'click #subNotification': 'submitNotification',
+			'click .deactivate': 'deactivateNotification',
 		},
 
 		allConditionsCounter: 0,
@@ -50,6 +51,12 @@
 					type: 'PUT',
 					contentType: 'application/json',
 					data: JSON.stringify(payload)
+				};
+			},
+
+			getAppSettings: function() {
+				return {
+					url: helpers.fmt('/api/v2/apps/installations/%@.json', this.installationId()),
 				};
 			}
 		},
@@ -155,23 +162,35 @@
 		},
 
 		activated: function() {
+			this.messages = this.setting('messages') ? JSON.parse(this.setting('messages')) : [];
 			if(this.currentLocation() == "ticket_sidebar") {
 				this.init();
 			} else {
+				var notifications = {
+					active: this.messages.filter(function(setting) { return setting.active; }),
+					inactive: this.messages.filter(function(setting) { return !setting.active; })
+				};
+				this.switchTo('index', notifications);
 				this.index();
 			}
 		},
 
 		index: function() {
-			var setting = this.setting('messages');
-			var setting_array = setting ? JSON.parse(setting) : [];
+			var that = this;
+			this.ajax('getAppSettings').done(function(data) {
+				that.messages = data.settings.messages ? JSON.parse(data.settings.messages) : [];
+				var notifications = {
+					active: that.messages.filter(function(setting) { return setting.active; }),
+					inactive: that.messages.filter(function(setting) { return !setting.active; })
+				};
+				that.switchTo('index', notifications);
+			});
+		},
 
-			var notifications = {
-				active: setting_array,
-				inactive: []
-			};
-
-			this.switchTo('index', notifications);
+		deactivateNotification: function(e) {
+			e.preventDefault();
+			console.log(parseInt(this.$(e.currentTarget).attr('data-id'), 10));
+			console.log(this.$(e.currentTarget));
 		},
 
 		newNotification: function(e) {
@@ -280,6 +299,7 @@
 			notification.title = title;
 			notification.message = message;
 			notification.conditions = conditions;
+			notification.active = true;
 			this.saveToSettings(notification);
 		},
 
@@ -311,6 +331,9 @@
 		},
 
 		validateNotification: function(notification) {
+			if(true) {
+				return true;
+			}
 
 			if (notification.conditions.any.length === 0 && notification.conditions.all.length === 0) {
 				services.notify('There must be at least one condition in order to create a notification.', 'error');
