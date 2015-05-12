@@ -52,6 +52,10 @@
 }
 
 /*** Form Styles ***/
+.op_and_value {
+  display: inline-block;
+}
+
 .frame {
   padding: 7px 15px 20px 13px;
   margin: 9px 8px 10px -12px;

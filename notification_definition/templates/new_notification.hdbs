@@ -6,128 +6,65 @@
 <div class="frame rule_conditions">
   <h3 class="rule_conditions">Meet <span class="invert">all</span> of the following conditions:</h3>
 
-  <div id="1_condition">
-    <fieldset class="conditions" id="1_condition_1">
-      <a class="minus-button" href="#"></a>
-      <select class="chosen_dropdown" name="sets[1][conditions][1][source]" style="width: 225px;">
-        <option value="PICKCONDITION">-- Click to select condition. --</option>
+  <div id="all_conditions">
+    <fieldset class="conditions" id="all_condition_0">
+      <select class="chosen_dropdown" style="width: 225px;">
+        <option>-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
         <option value="status_id">Ticket: Status</option>
-        <option value="ticket_form_id">Ticket: Form</option>
         <option value="ticket_type_id">Ticket: Type</option>
         <option value="priority_id">Ticket: Priority</option>
-        <option value="group_id">Ticket: Group</option>
         <option value="assignee_id">Ticket: Assignee</option>
         <option value="requester_id">Ticket: Requester</option>
         <option value="organization_id">Ticket: Organization</option>
         <option value="current_tags">Ticket: Tags</option>
-        <option value="reopens">Ticket: Reopens</option>
-        <option disabled="disabled">--------------------------</option>
-        <option value="requester_twitter_verified">Requester: Is verified by Twitter</option>
         <option disabled="disabled">--------------------------</option>
         <option value="role">Other: Current user</option>
       </select>
+      <div class="op_and_value"></div>
     </fieldset>
   </div>
 
   <fieldset class="conditions add">
     <h3 class="light">Add condition</h3>
-    <a class="plus-button" href="#" onclick="jQuery('#1_condition').append(allRuleSet.buildConditionRow()); return false;"></a>
+    <a id="addAllCondition" class="add_condition right" href="#"><img src="{{assetURL 'add_item.png'}}" alt="add item" /></a>
   </fieldset>
 
   <h3 style="margin-top:15px;" class="rule_conditions">Meet <span class="invert">any</span> of the following conditions:</h3>
-  <label for="user_auto">Users:<input type="text" id="user_auto" /></label>
-  <label for="org_auto">Orgs:<input type="text" id="org_auto" /></label>
 
-  <div id="2_condition">
-    <fieldset class="conditions" id="2_condition_1">
-      <a class="minus-button" href="#"></a>
-      <select class="chosen_dropdown" name="sets[2][conditions][1][source]" style="width: 225px;">
-        <option value="PICKCONDITION">-- Click to select condition. --</option>
+  <div id="any_conditions">
+    <fieldset class="conditions" id="any_condition_0">
+      <select class="chosen_dropdown" style="width: 225px;">
+        <option>-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
         <option value="status_id">Ticket: Status</option>
-        <option value="brand_id">Ticket: Brand</option>
-        <option value="ticket_form_id">Ticket: Form</option>
         <option value="ticket_type_id">Ticket: Type</option>
         <option value="priority_id">Ticket: Priority</option>
-        <option value="group_id">Ticket: Group</option>
         <option value="assignee_id">Ticket: Assignee</option>
         <option value="requester_id">Ticket: Requester</option>
         <option value="organization_id">Ticket: Organization</option>
         <option value="current_tags">Ticket: Tags</option>
-        <option value="via_id">Ticket: Channel</option>
-        <option value="current_via_id">Ticket: Update via</option>
-        <option value="recipient">Ticket: Received at</option>
-        <option value="update_type">Ticket: Is...</option>
-        <option value="comment_is_public">Ticket: Comment is...</option>
-        <option value="comment_includes_word">Ticket: Comment text...</option>
-        <option value="reopens">Ticket: Reopens</option>
-        <option value="replies">Ticket: Agent replies</option>
-        <option value="agent_stations">Ticket: Assignee stations</option>
-        <option value="group_stations">Ticket: Group stations</option>
-        <option value="in_business_hours">Ticket: Within business hours?</option>
-        <option disabled="disabled">--------------------------</option>
-        <option value="requester_twitter_followers_count">Requester: Number of Twitter followers</option>
-        <option value="requester_twitter_statuses_count">Requester: Number of tweets is...</option>
-        <option value="requester_twitter_verified">Requester: Is verified by Twitter</option>
         <option disabled="disabled">--------------------------</option>
         <option value="role">Other: Current user</option>
+        <div class="op_and_value"></div>
       </select>
     </fieldset>
   </div>
 
   <fieldset class="conditions add">
     <h3 class="light">Add condition</h3>
-
-    <a class="plus-button" href="#" onclick="jQuery('#2_condition').append(anyRuleSet.buildConditionRow()); return false;"></a>
-
+    <a id="addAnyCondition" class="add_condition right" href="#"><img src="{{assetURL 'add_item.png'}}" alt="add item" /></a>
   </fieldset>
-
-
-  <div id="live-preview" class="tickets" style="display: none; margin-top: 20px;"></div>
 </div>
 
 <div class="frame rule_actions">
-  <h3 class="rule_actions">Perform these actions:</h3>
-
-  <div id="1_action">
-    <fieldset class="conditions" id="1_action_1">
-      <a class="minus-button" href="#"></a>
-      <select class="chosen_dropdown" name="sets[1][actions][1][source]" style="width: 225px;">
-        <option value="PICKACTION">-- Click to select action. --</option>
-        <option disabled="disabled">--------------------------</option>
-        <option value="status_id">Ticket: Status</option>
-        <option value="brand_id">Ticket: Brand</option>
-        <option value="ticket_form_id">Ticket: Form</option>
-        <option value="priority_id">Ticket: Priority</option>
-        <option value="ticket_type_id">Ticket: Type</option>
-        <option value="group_id">Ticket: Group</option>
-        <option value="assignee_id">Ticket: Assignee</option>
-        <option value="set_tags">Ticket: Set tags</option>
-        <option value="current_tags">Ticket: Add tags</option>
-        <option value="remove_tags">Ticket: Remove tags</option>
-        <option value="cc">Ticket: Add CC</option>
-        <option disabled="disabled">--------------------------</option>
-        <option value="notification_user">Notifications: Email user</option>
-        <option value="notification_group">Notifications: Email group</option>
-        <option value="tweet_requester">Notifications: Tweet requester</option>
-      </select>
-      <input type="hidden" name="sets[1][actions][1][operator]" value="is">
-    </fieldset>
-  </div>
-
-  <fieldset class="conditions add">
-    <h3 class="light">Add action</h3>
-    <a class="plus-button" href="#" onclick="jQuery('#1_action').append(actionRuleSet.buildActionRow()); return false;"></a>
-  </fieldset>
-
+  <h3 class="rule_actions">Notification Content:</h3>
+  <blink>Coming soon!</blink>
 </div>
-
-<input id="output_columns" name="output[columns]" type="hidden">
 
 <div class="action">
   <input id="rule_type" name="rule[type]" type="hidden" value="Trigger">
   <input id="return_to" name="return_to" type="hidden" value="/rules/triggers?filter=triggers">
-  <button id="cancelCreate">Cancel</button>
+  <a href="#" id="cancelCreate">Cancel</a>
   <input class="button primary" name="commit" type="submit" value="Create notification">
 </div>
