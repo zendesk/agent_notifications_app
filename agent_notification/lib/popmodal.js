@@ -34,6 +34,12 @@ module.exports = {
             cancel: util.appFramework.$('.btn-cancel').html(message.cancel),
             option: util.appFramework.$('span.option').html(message.options)
         });
+        if(!message.cancel) {
+            util.appFramework.$('.btn-cancel').hide();
+        } 
+        if(!message.confirm) {
+            util.appFramework.$('.btn-confirm').hide();
+        }
         util.appFramework.$('.modalAccept').off('click');
         util.appFramework.$('.modalCancel').off('click');
         util.appFramework.$('.modalAccept').on('click', function() {
