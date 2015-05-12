@@ -328,7 +328,6 @@
 			}
 			var conditions = notification.conditions;
 			var all_conditions = conditions.any.concat(conditions.all);
-			console.log(all_conditions);
 
 			var null_val = _.filter(all_conditions, function(item){
 				return item.value === "" || item.value === "-";
