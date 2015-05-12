@@ -62,7 +62,7 @@
 			qualifiers:["requester_id","assignee_id","organization_id","user_id","ticket_id"]
 		},
 		{
-			html:"<select class='operator'><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
+			html:"<select class='operator'><option value='includes'>includes one of</option><option value='includes_all'>includes all of</option><option value='not_includes'>includes none of</option></select><input class='op_val' type='text' />",
 			qualifiers:["current_tags"]
 		},
 		{
@@ -258,6 +258,10 @@
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
 				}
+				else if(field == 'current_tags') {
+					var tags = self.$(item).find('div.op_and_value .op_val').val();
+					value = tags.trim().split(' ');
+				}
 				else if(field == '-') {
 					return false;
 				}
@@ -278,6 +282,10 @@
 				if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
+				}
+				else if(field == 'current_tags') {
+					var tags = self.$(item).find('div.op_and_value .op_val').val();
+					value = tags.trim().split(' ');
 				}
 				else if(field == '-') {
 					return false;
