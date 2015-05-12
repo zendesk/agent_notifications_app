@@ -12,7 +12,7 @@
 			'click .remove_condition': 'removeCondition',
 			'click #subNotification': 'submitNotification',
 			'click .list_action.edit': 'editNotification',
-			'click #saveNotification': 'submitNotification'
+			'click #saveNotification': 'submitNotification',
 			'click .deactivate': 'deactivateNotification',
 		},
 
@@ -329,21 +329,40 @@
 			notification.message = message;
 			notification.conditions = conditions;
 			notification.active = true;
-			this.saveToSettings(notification);
+			this.ajax('getAppSettings')
+			.done(function(data){
+				var setting = data.settings.messages;
+				self.saveToSettings(notification, setting);
+			})
+			.fail(function(data){
+				services.notify('There was an error retrieving the latest settings. Please refresh your browser and try again.','error');
+			});
 		},
 
-		saveToSettings: function(notification) {
+		saveToSettings: function(notification, setting) {
 			var self = this;
 			var installID = this.installationId();
-			var setting = this.setting('messages');
 			var setting_array = setting ? JSON.parse(setting) : [];
-			setting_array.push(notification);
+			console.log(setting_array);
+			var match = _.findIndex(setting_array, function(item){
+				return item.id === notification.id;
+			});
+			console.log(match);
+			console.log(setting_array[match]);
+			console.log(notification);
+			if(match > -1) {
+				setting_array[match] = notification;
+			} else {
+				setting_array.push(notification);
+			}
+			console.log(setting_array);
 			var new_settings = JSON.stringify(setting_array);
 			var payload = {
 				"settings":{
 					"messages": new_settings
 				}
 			};
+			console.log(payload);
 			var valid_notification = this.validateNotification(notification);
 			if(valid_notification === true) {
 				this.ajax(
