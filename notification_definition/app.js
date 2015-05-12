@@ -24,7 +24,7 @@
       }
     ],
 
-  	requests: {
+    requests: {
       autocompleteRequester: function(name) {
         return {
           url: helpers.fmt('/api/v2/users/autocomplete.json?name=%@', name),
@@ -36,8 +36,17 @@
           url: helpers.fmt('/api/v2/organizations/autocomplete.json?name=%@', name),
           type: 'GET'
         };
+      },
+      saveToAppSettings: function(payload, installID) {
+        return {
+          url: helpers.fmt('/api/v2/apps/installations/%@.json', installID),
+          dataType: 'JSON',
+          type: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(payload)
+        };
       }
-  	},
+    },
 
     activeNotifications: [
       {id: 1, name: "Here", otherStuff: {}},
@@ -105,7 +114,7 @@
     },
 
     show_operation: function(e) {
-    	e.preventDefault();
+      e.preventDefault();
       var selected = e.currentTarget;
       var current_option = e.currentTarget.value;
       var target = this.$(selected)[0];
@@ -136,14 +145,15 @@
         any: []
       };
       _.each(all_conditions_html, function(item){
+        var value;
         var field = self.$(item).find('select.chosen_dropdown').val();
         var operator = self.$(item).find('div.op_and_value .operator').val();
         if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
-          var value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
+          value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
           value = parseInt(value, 10);
         }
         else {
-          var value = self.$(item).find('div.op_and_value .op_val').val();
+          value = self.$(item).find('div.op_and_value .op_val').val();
         }
         var condition_object = {
           "field": field,
@@ -153,14 +163,15 @@
         conditions.all.push(condition_object);
       });
       _.each(any_conditions_html, function(item){
+        var value;
         var field = self.$(item).find('select.chosen_dropdown').val();
         var operator = self.$(item).find('div.op_and_value .operator').val();
         if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
-          var value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
+          value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
           value = parseInt(value, 10);
         }
         else {
-          var value = self.$(item).find('div.op_and_value .op_val').val();
+          value = self.$(item).find('div.op_and_value .op_val').val();
         }
         var condition_object = {
           "field": field,
@@ -174,7 +185,23 @@
       notification.title = title;
       notification.message = message;
       notification.conditions = conditions;
-      console.log(JSON.stringify(notification));
+      this.saveToSettings(notification);
+    },
+
+    saveToSettings: function(notification) {
+      var installID = this.installationId();
+      var setting = this.setting('messages');
+      var setting_array = setting ? JSON.parse(setting) : [];
+      setting_array.push(notification);
+      var new_settings = JSON.stringify(setting_array);
+      var payload = {
+        "settings":{
+          "messages": new_settings
+        }
+      };
+      this.ajax('saveToAppSettings', payload, installID).done(function(data){
+        services.notify('successfully updated app with new notification!', 'notice');
+      });
     },
 
     autocompleteRequesterName: function(parent_id) {

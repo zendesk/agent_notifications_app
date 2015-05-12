@@ -9,5 +9,12 @@
   "private": true,
   "location": "nav_bar",
   "version": "1.0",
-  "frameworkVersion": "1.0"
+  "frameworkVersion": "1.0",
+  "parameters": [
+    { 
+      "name": "messages",
+      "type": "multiline",
+      "value": ""
+    }
+  ]
 }
