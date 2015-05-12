@@ -1,0 +1,73 @@
+<input name="utf8" type="hidden" value="✓">
+
+<h2>Notification title</h2>
+<input id="notificationTitle" class="title" type="text" value="">
+
+<div class="frame rule_conditions">
+  <h3 class="rule_conditions">Meet <span class="invert">all</span> of the following conditions:</h3>
+
+  <div id="all_conditions">
+    <fieldset class="conditions" id="all_condition_0">
+      <select class="chosen_dropdown" style="width: 225px;">
+        <option>-- Click to select condition. --</option>
+        <option disabled="disabled">--------------------------</option>
+        <option value="ticket_id">Ticket: ID</option>
+        <option value="status">Ticket: Status</option>
+        <option value="ticket_type">Ticket: Type</option>
+        <option value="priority">Ticket: Priority</option>
+        <option value="assignee_id">Ticket: Assignee</option>
+        <option value="requester_id">Ticket: Requester</option>
+        <option value="organization_id">Ticket: Organization</option>
+        <option value="current_tags">Ticket: Tags</option>
+        <option disabled="disabled">--------------------------</option>
+        <option value="user_id">Other: Current user</option>
+      </select>
+      <div class="op_and_value"></div>
+    </fieldset>
+  </div>
+
+  <fieldset class="conditions add">
+    <h3 class="light">Add condition</h3>
+    <a id="addAllCondition" class="add_condition right" href="#"><img src="{{assetURL 'add_item.png'}}" alt="add item" /></a>
+  </fieldset>
+
+  <h3 style="margin-top:15px;" class="rule_conditions">Meet <span class="invert">any</span> of the following conditions:</h3>
+
+  <div id="any_conditions">
+    <fieldset class="conditions" id="any_condition_0">
+      <select class="chosen_dropdown" style="width: 225px;">
+        <option>-- Click to select condition. --</option>
+        <option disabled="disabled">--------------------------</option>
+        <option value="ticket_id">Ticket: ID</option>
+        <option value="status">Ticket: Status</option>
+        <option value="ticket_type">Ticket: Type</option>
+        <option value="priority">Ticket: Priority</option>
+        <option value="assignee_id">Ticket: Assignee</option>
+        <option value="requester_id">Ticket: Requester</option>
+        <option value="organization_id">Ticket: Organization</option>
+        <option value="current_tags">Ticket: Tags</option>
+        <option disabled="disabled">--------------------------</option>
+        <option value="user_id">Other: Current user</option>
+      </select>
+      <div class="op_and_value"></div>
+    </fieldset>
+  </div>
+
+  <fieldset class="conditions add">
+    <h3 class="light">Add condition</h3>
+    <a id="addAnyCondition" class="add_condition right" href="#"><img src="{{assetURL 'add_item.png'}}" alt="add item" /></a>
+  </fieldset>
+</div>
+
+<div class="frame notification_actions">
+  <h3 class="rule_conditions">Notification Content:</h3>
+  <p class="notification_content_hint">You can use plaintext or html in this box and it will get rendered in the modal.</p>
+  <textarea id="notificationContent" class="notification_content" rows="5"></textarea>
+</div>
+
+<div class="action">
+  <input id="rule_type" name="rule[type]" type="hidden" value="Trigger">
+  <input id="return_to" name="return_to" type="hidden" value="/rules/triggers?filter=triggers">
+  <a href="#" id="cancelCreate">Cancel</a>
+  <input id="subNotification" class="button primary" name="commit" type="button" value="Create notification">
+</div>
