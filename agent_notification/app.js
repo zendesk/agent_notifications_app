@@ -5,7 +5,7 @@
 			'app.activated':'activated',
 			'click .btn-modal':'popModal',
 			'click #newNotification': 'newNotification',
-			'click #cancelCreate': 'index',
+			'click #cancelCreate': function(e) {e.preventDefault(); this.index();},
 			'change .chosen_dropdown': 'show_operation',
 			'click #addAllCondition': 'addAllCondition',
 			'click #addAnyCondition': 'addAnyCondition',
@@ -181,7 +181,7 @@
 		},
 
 		index: function(e) {
-			e.preventDefault();
+			//e.preventDefault();
 			var that = this;
 			this.ajax('getAppSettings').done(function(data) {
 				that.messages = data.settings.messages ? JSON.parse(data.settings.messages) : [];
