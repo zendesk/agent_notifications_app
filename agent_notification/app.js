@@ -241,6 +241,9 @@
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
 				}
+				else if(field == '-') {
+					return false;
+				}
 				else {
 					value = self.$(item).find('div.op_and_value .op_val').val();
 				}
@@ -258,6 +261,9 @@
 				if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
+				}
+				else if(field == '-') {
+					return false;
 				}
 				else {
 					value = self.$(item).find('div.op_and_value .op_val').val();
@@ -289,16 +295,47 @@
 					"messages": new_settings
 				}
 			};
-			this.ajax(
-				'saveToAppSettings',
-				payload,
-				installID
-			).done(function(data) {
-				services.notify('Successfully saved new notification!', 'notice');
-				self.index();
-			}).fail(function() {
-				services.notify('Failed to save the notification. Please refresh your browser and try again.', 'error');
+			var valid_notification = this.validateNotification(notification);
+			if(valid_notification === true) {
+				this.ajax(
+					'saveToAppSettings',
+					payload,
+					installID
+				).done(function(data) {
+					services.notify('Successfully saved new notification!', 'notice');
+					self.index();
+				}).fail(function() {
+					services.notify('Failed to save the notification. Please refresh your browser and try again.', 'error');
+				});
+			}
+		},
+
+		validateNotification: function(notification) {
+
+			if (notification.conditions.any.length === 0 && notification.conditions.all.length === 0) {
+				services.notify('There must be at least one condition in order to create a notification.', 'error');
+				return false;
+			}
+
+			if (notification.message === "") {
+				services.notify('There must be a message in order to create a notification.', 'error');
+				return false;
+			}
+
+			if (notification.title === "") {
+				services.notify('There must be a title in order to create a notification.', 'error');
+				return false;
+			}
+
+			var null_val = _.filter(notification, function(item){
+				return item.value === "" || isNaN(item.value) === true;
 			});
+			if (null_val.length > 0) {
+				services.notify('A value cannot be blank.','error');
+				return false;
+			}
+			return true;
+
 		},
 
 		autocompleteRequesterName: function(parent_id) {
