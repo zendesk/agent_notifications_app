@@ -99,7 +99,7 @@
     }
   });
 
-  $('#all_conditions, #any_conditions > fieldset').each(function(i, el) {
+  $('#all_conditions, #any_conditions').find('fieldset').each(function(i, el) {
     var select = $(el).find('select')[0];
     var selected = $(select).data('selected');
     $(select).val(selected);
