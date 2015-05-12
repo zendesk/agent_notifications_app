@@ -46,8 +46,8 @@
         <option value="current_tags">Ticket: Tags</option>
         <option disabled="disabled">--------------------------</option>
         <option value="role">Other: Current user</option>
-        <div class="op_and_value"></div>
       </select>
+      <div class="op_and_value"></div>
     </fieldset>
   </div>
 
@@ -57,9 +57,10 @@
   </fieldset>
 </div>
 
-<div class="frame rule_actions">
-  <h3 class="rule_actions">Notification Content:</h3>
-  <blink>Coming soon!</blink>
+<div class="frame notification_actions">
+  <h3 class="rule_conditions">Notification Content:</h3>
+  <p class="notification_content_hint">You can use plaintext or html in this box and it will get rendered in the modal.</p>
+  <textarea id="notificationContent" class="notification_content" rows="5"></textarea>
 </div>
 
 <div class="action">

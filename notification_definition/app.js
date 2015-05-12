@@ -58,14 +58,16 @@
         active: this.activeNotifications,
         inactive: this.inactiveNotifications
       };
-      this.allConditionsCounter = 0;
-      this.anyConditionsCounter = 0;
 
       this.switchTo('index', notifications);
     },
 
     newNotification: function(e) {
       e.preventDefault();
+
+      this.allConditionsCounter = 0;
+      this.anyConditionsCounter = 0;
+
       this.switchTo('new_notification', null);
     },
 
