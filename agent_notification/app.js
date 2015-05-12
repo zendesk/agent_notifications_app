@@ -128,8 +128,8 @@
 		unreadMessages: function() {
 			var that = this;
 			var checkConditions = this.require('check_condition');
-			return this.messages.filter(function(message) {
-				return checkConditions(message.conditions) && !_.contains(that.cleared_notifications, message.id);
+			return this.ticketMessages().filter(function(message) {
+				return !_.contains(that.cleared_notifications, message.id);
 			});
 		},
 
@@ -137,7 +137,7 @@
 			var that = this;
 			var checkConditions = this.require('check_condition');
 			return this.messages.filter(function(message) {
-				return checkConditions(message.conditions);
+				return checkConditions(message.conditions) && message.active;
 			});
 		},
 

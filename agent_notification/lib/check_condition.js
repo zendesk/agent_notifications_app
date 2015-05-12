@@ -15,12 +15,16 @@ var util = {
             return value1 !== value2;
         },
 
-        includes: function(list, value) {
-            return _.contains(list, value);
+        includes: function(ticket, condition) {
+            return _.intersection(ticket, condition).length > 0;
         },
 
-        not_includes: function(list, value) {
-            return !_.contains(list, value);
+        not_includes: function(ticket, condition) {
+            return _.intersection(ticket, condition).length === 0;
+        },
+
+        includes_all: function(ticket, condition) {
+            return _.intersection(ticket, condition).length === ticket.length;
         },
 
         any: function(conditions) {
@@ -109,8 +113,9 @@ module.exports = {
     },
 
     checkCondition: function(conditions) { 
-        var all = util.operators.all(util.mapCondition(conditions.all));
-        var any = util.operators.any(util.mapCondition(conditions.any));
+
+        var all = conditions.all ? util.operators.all(util.mapCondition(conditions.all)) : true;
+        var any = conditions.any ? util.operators.any(util.mapCondition(conditions.any)) : true;
         return all && any;
     }
 };
