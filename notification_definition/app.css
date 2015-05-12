@@ -3,6 +3,55 @@
   padding: 0 0 0 20px;
 }
 
+.right {
+  float: right;
+}
+
+/*** Index styles ***/
+.notifications_list {
+  width: 1100px;
+  border-top: 1px solid #eee;
+}
+
+.notifications_list .list_title {
+  height: 35px;
+  line-height: 35px;
+  font-weight: bold;
+}
+
+.notifications_list .list_item {
+  height: 35px;
+  line-height: 35px;
+  padding-left: 20px;
+  border-top: 1px solid #eee;
+}
+
+.notifications_list .list_item .list_action.edit {
+  color: green;
+  font-weight: bold;
+}
+
+.notifications_list .item_name {
+  display: inline-block;
+}
+
+.notifications_list .actions {
+  display: inline-block;
+}
+
+.notifications_list .actions .list_action {
+  display: inline-block;
+}
+
+.notifications_list .hover_actions {
+  display: none;
+}
+
+.notifications_list .list_item:hover .hover_actions {
+  display: inline-block;
+}
+
+/*** Form Styles ***/
 .frame {
   padding: 7px 15px 20px 13px;
   margin: 9px 8px 10px -12px;
