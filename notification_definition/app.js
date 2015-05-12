@@ -1,6 +1,17 @@
 (function() {
 
   return {
+    operators: [
+      {  
+        html:"<select><option>is</option></select>",
+        qualifiers:["assignee_id","organization_id"]
+      },
+      {
+        html:"<select><option>includes</option></select>",
+        qualifiers:["current_tags"]
+      } 
+    ],
+
   	requests: {
       autocompleteRequester: function(name) {
         return {
@@ -29,6 +40,7 @@
     show_operation: function(e) {
     	e.preventDefault();
       var current_option = e.currentTarget.value;
+      console.log(current_option);
 
     },
 
