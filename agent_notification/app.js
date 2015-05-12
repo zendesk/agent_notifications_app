@@ -11,6 +11,8 @@
 			'click #addAnyCondition': 'addAnyCondition',
 			'click .remove_condition': 'removeCondition',
 			'click #subNotification': 'submitNotification',
+			'click .list_action.edit': 'editNotification',
+			'click #saveNotification': 'submitNotification'
 			'click .deactivate': 'deactivateNotification',
 		},
 
@@ -67,7 +69,7 @@
 			qualifiers:["requester_id","assignee_id","organization_id","user_id","ticket_id"]
 		},
 		{
-			html:"<select class='operator'><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
+			html:"<select class='operator'><option value='includes'>includes one of</option><option value='includes_all'>includes all of</option><option value='not_includes'>includes none of</option></select><input class='op_val' type='text' />",
 			qualifiers:["current_tags"]
 		},
 		{
@@ -161,7 +163,8 @@
 			this.draw(this.unreadMessages());
 		},
 
-		activated: function() {
+		activated: function(e) {
+			e.preventDefault();
 			this.messages = this.setting('messages') ? JSON.parse(this.setting('messages')) : [];
 			if(this.currentLocation() == "ticket_sidebar") {
 				this.init();
@@ -171,7 +174,6 @@
 					inactive: this.messages.filter(function(setting) { return !setting.active; })
 				};
 				this.switchTo('index', notifications);
-				this.index();
 			}
 		},
 
@@ -200,6 +202,18 @@
 			this.anyConditionsCounter = 0;
 
 			this.switchTo('new_notification', null);
+		},
+
+		editNotification: function(e) {
+			e.preventDefault();
+
+			var id = this.$(e.currentTarget).data('id');
+			var setting = this.setting('messages');
+			var setting_array = setting ? JSON.parse(setting) : [];
+
+			var notification = _.findWhere(setting_array, {id: id});
+
+			this.switchTo('edit_notification', notification);
 		},
 
 		addAllCondition: function(e) {
@@ -240,9 +254,11 @@
 				this.$(inserted).children("input.op_val").addClass('autocomplete_org');
 				this.autocompleteOrganizationName(parent_id);
 			}
+			this.$(inserted).trigger('opAndValueInserted');
 		},
 
-		submitNotification: function() {
+		submitNotification: function(e) {
+			e.preventDefault();
 			var self = this;
 			var title = this.$("#notificationTitle").val();
 			var message = this.$("#notificationContent").val();
@@ -259,6 +275,10 @@
 				if(field == 'assignee_id' || field == 'requester_id' || field == 'organization_id') {
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
+				}
+				else if(field == 'current_tags') {
+					var tags = self.$(item).find('div.op_and_value .op_val').val();
+					value = tags.trim().split(' ');
 				}
 				else if(field == '-') {
 					return false;
@@ -281,6 +301,10 @@
 					value = self.$(item).find('div.op_and_value input.op_val').next('span').text();
 					value = parseInt(value, 10);
 				}
+				else if(field == 'current_tags') {
+					var tags = self.$(item).find('div.op_and_value .op_val').val();
+					value = tags.trim().split(' ');
+				}
 				else if(field == '-') {
 					return false;
 				}
@@ -295,7 +319,12 @@
 				conditions.any.push(condition_object);
 			});
 			var notification = {};
-			notification.id = Date.now();
+			if(e.currentTarget.dataset.id) {
+				notification.id = e.currentTarget.dataset.id;
+			}
+			else {
+				notification.id = Date.now();
+			}
 			notification.title = title;
 			notification.message = message;
 			notification.conditions = conditions;
@@ -331,9 +360,6 @@
 		},
 
 		validateNotification: function(notification) {
-			if(true) {
-				return true;
-			}
 
 			if (notification.conditions.any.length === 0 && notification.conditions.all.length === 0) {
 				services.notify('There must be at least one condition in order to create a notification.', 'error');
@@ -349,14 +375,29 @@
 				services.notify('There must be a title in order to create a notification.', 'error');
 				return false;
 			}
+			var conditions = notification.conditions;
+			var all_conditions = conditions.any.concat(conditions.all);
 
-			var null_val = _.filter(notification, function(item){
-				return item.value === "" || isNaN(item.value) === true;
+			var null_val = _.filter(all_conditions, function(item){
+				return item.value === "" || item.value === "-";
 			});
+
 			if (null_val.length > 0) {
 				services.notify('A value cannot be blank.','error');
 				return false;
 			}
+
+			var null_num = _.filter(all_conditions, function(item) {
+				if(item.field === 'assignee_id' || item.field === 'requester_id' || item.field === 'organization_id') {
+					return isNaN(item.value);
+				}
+			});
+
+			if (null_num.length > 0) {
+				services.notify('A user or organization value cannot be blank.','error');
+				return false;
+			}
+
 			return true;
 
 		},
