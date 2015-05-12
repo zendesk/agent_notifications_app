@@ -43,14 +43,22 @@
       'app.activated':'index',
       'click #newNotification': 'newNotification',
       'click #cancelCreate': 'index',
-      'change .chosen_dropdown': 'show_operation'
+      'change .chosen_dropdown': 'show_operation',
+      'click #addAllCondition': 'addAllCondition',
+      'click #addAnyCondition': 'addAnyCondition',
+      'click .remove_condition': 'removeCondition'
     },
+
+    allConditionsCounter: 0,
+    anyConditionsCounter: 0,
 
     index: function() {
       var notifications = {
         active: this.activeNotifications,
         inactive: this.inactiveNotifications
       };
+      this.allConditionsCounter = 0;
+      this.anyConditionsCounter = 0;
 
       this.switchTo('index', notifications);
     },
@@ -60,6 +68,25 @@
       this.switchTo('new_notification', null);
       this.autocompleteRequesterName();
       this.autocompleteOrganizationName();
+    },
+
+    addAllCondition: function(e) {
+      e.preventDefault();
+      this.allConditionsCounter += 1;
+      var fieldset = this.renderTemplate('all_condition_fieldset', {id: this.allConditionsCounter});
+      this.$('#all_conditions').append(fieldset);
+    },
+
+    removeCondition: function(e) {
+      e.preventDefault();
+      this.$(e.currentTarget).parents('fieldset').remove();
+    },
+
+    addAnyCondition: function(e) {
+      e.preventDefault();
+      this.anyConditionsCounter += 1;
+      var fieldset = this.renderTemplate('any_condition_fieldset', {id: this.anyConditionsCounter});
+      this.$('#any_conditions').append(fieldset);
     },
 
     show_operation: function(e) {

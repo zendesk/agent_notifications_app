@@ -1,0 +1,17 @@
+<fieldset class="conditions" id="any_condition_{{id}}">
+  <select class="chosen_dropdown" style="width: 225px;">
+    <option>-- Click to select condition. --</option>
+    <option disabled="disabled">--------------------------</option>
+    <option value="status_id">Ticket: Status</option>
+    <option value="ticket_type_id">Ticket: Type</option>
+    <option value="priority_id">Ticket: Priority</option>
+    <option value="assignee_id">Ticket: Assignee</option>
+    <option value="requester_id">Ticket: Requester</option>
+    <option value="organization_id">Ticket: Organization</option>
+    <option value="current_tags">Ticket: Tags</option>
+    <option disabled="disabled">--------------------------</option>
+    <option value="role">Other: Current user</option>
+  </select>
+  <div class="op_and_value"></div>
+  <a class="remove_condition right" href="#"><img src="{{assetURL 'remove_item.png'}}" /></a>
+</fieldset>
