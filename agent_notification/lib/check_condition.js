@@ -16,15 +16,15 @@ var util = {
         },
 
         includes: function(ticket, condition) {
-            return _.intersection(ticket, condition).length > 0;
+            return _.intersection(ticket, condition.trim().split(' ')).length > 0;
         },
 
         not_includes: function(ticket, condition) {
-            return _.intersection(ticket, condition).length === 0;
+            return _.intersection(ticket, condition.trim().split(' ')).length === 0;
         },
 
         includes_all: function(ticket, condition) {
-            return _.intersection(ticket, condition).length === ticket.length;
+            return _.intersection(ticket, condition.trim().split(' ')).length === ticket.length;
         },
 
         any: function(conditions) {

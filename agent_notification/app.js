@@ -324,7 +324,7 @@
 				}
 				else if(field == 'current_tags') {
 					var tags = self.$(item).find('div.op_and_value .op_val').val();
-					value = tags.trim().split(' ');
+					value = tags.trim();
 				}
 				else if(field == '-') {
 					return false;
@@ -348,8 +348,8 @@
 					value = parseInt(value, 10);
 				}
 				else if(field == 'current_tags') {
-					var tags = self.$(item).find('div.op_and_value .op_val').val();
-					value = tags.trim().split(' ');
+					var tags = self.$(itesplitm).find('div.op_and_value .op_val').val();
+					value = tags.trim();
 				}
 				else if(field == '-') {
 					return false;
