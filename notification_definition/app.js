@@ -97,8 +97,7 @@
         return item.qualifiers.indexOf(current_option) > -1;
       });
       var op_html = op_obj[0].html;
-      var parent = this.$(target).parent()[0];
-      var parent_id = this.$(parent).attr('id');
+      var parent_id = this.$(target).parent().attr('id');
       var inserted = this.$(target).parent().children(".op_and_value").html(op_html);
       if (current_option == 'requester_id' || current_option == 'assignee_id') {
         this.$(inserted).children("input.op_val").addClass('autocomplete_user');
