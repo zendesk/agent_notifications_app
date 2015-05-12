@@ -240,7 +240,8 @@
 			this.$(inserted).trigger('opAndValueInserted');
 		},
 
-		submitNotification: function() {
+		submitNotification: function(e) {
+			e.preventDefault();
 			var self = this;
 			var title = this.$("#notificationTitle").val();
 			var message = this.$("#notificationContent").val();
@@ -293,7 +294,12 @@
 				conditions.any.push(condition_object);
 			});
 			var notification = {};
-			notification.id = Date.now();
+			if(e.currentTarget.dataset.id) {
+				notification.id = e.currentTarget.dataset.id;
+			}
+			else {
+				notification.id = Date.now();
+			}
 			notification.title = title;
 			notification.message = message;
 			notification.conditions = conditions;
