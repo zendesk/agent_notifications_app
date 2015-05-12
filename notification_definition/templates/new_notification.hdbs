@@ -11,6 +11,7 @@
       <select class="chosen_dropdown" style="width: 225px;">
         <option>-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
+        <option value="ticket_id">Ticket: ID</option>
         <option value="status">Ticket: Status</option>
         <option value="ticket_type">Ticket: Type</option>
         <option value="priority">Ticket: Priority</option>
@@ -19,7 +20,7 @@
         <option value="organization_id">Ticket: Organization</option>
         <option value="current_tags">Ticket: Tags</option>
         <option disabled="disabled">--------------------------</option>
-        <option value="role">Other: Current user</option>
+        <option value="user_id">Other: Current user</option>
       </select>
       <div class="op_and_value"></div>
     </fieldset>
@@ -37,6 +38,7 @@
       <select class="chosen_dropdown" style="width: 225px;">
         <option>-- Click to select condition. --</option>
         <option disabled="disabled">--------------------------</option>
+        <option value="ticket_id">Ticket: ID</option>
         <option value="status">Ticket: Status</option>
         <option value="ticket_type">Ticket: Type</option>
         <option value="priority">Ticket: Priority</option>
@@ -45,7 +47,7 @@
         <option value="organization_id">Ticket: Organization</option>
         <option value="current_tags">Ticket: Tags</option>
         <option disabled="disabled">--------------------------</option>
-        <option value="role">Other: Current user</option>
+        <option value="user_id">Other: Current user</option>
       </select>
       <div class="op_and_value"></div>
     </fieldset>

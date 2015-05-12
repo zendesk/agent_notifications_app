@@ -3,23 +3,23 @@
   return {
     operators: [
       {
-        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is_not</option></select><input class='op_val' type='text' />",
-        qualifiers:["requester_id","assignee_id","organization_id"]
+        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is not</option></select><input class='op_val' type='text' />",
+        qualifiers:["requester_id","assignee_id","organization_id","user_id","ticket_id"]
       },
       {
         html:"<select class='operator'><option value='includes'>includes</option><option value='not_includes'>does not include</option></select><input class='op_val' type='text' />",
         qualifiers:["current_tags"]
       },
       {
-        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option>-</option><option value='question'>Question</option><option value='incident'>Incident</option><option value='problem'>Problem</option><option value='task'>Task</option></select>",
+        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is not</option></select><select class='op_val'><option>-</option><option value='question'>Question</option><option value='incident'>Incident</option><option value='problem'>Problem</option><option value='task'>Task</option></select>",
         qualifiers:["ticket_type"]
       },
       {
-        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option value='new'>New</option><option value='open'>Open</option><option value='pending'>Pending</option><option value='solved'>Solved</option><option value='closed'>Closed</option>",
+        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is not</option></select><select class='op_val'><option value='new'>New</option><option value='open'>Open</option><option value='pending'>Pending</option><option value='solved'>Solved</option><option value='closed'>Closed</option>",
         qualifiers:["status"]
       },
       {
-        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is_not</option></select><select class='op_val'><option>-</option><option value='low'>Low</option><option value='normal'>Normal</option><option value='high'>High</option><option value='urgent'>Urgent</option></select>",
+        html:"<select class='operator'><option value='is'>is</option><option value='is_not'>is not</option></select><select class='op_val'><option>-</option><option value='low'>Low</option><option value='normal'>Normal</option><option value='high'>High</option><option value='urgent'>Urgent</option></select>",
         qualifiers:["priority"]
       }
     ],
@@ -38,18 +38,6 @@
         };
       }
   	},
-
-    activeNotifications: [
-      {id: 1, name: "Here", otherStuff: {}},
-      {id: 2, name: "Hello", otherStuff: {}},
-      {id: 2, name: "Nope", otherStuff: {}},
-      {id: 2, name: "Face Punch", otherStuff: {}}
-    ],
-
-    inactiveNotifications: [
-      {id: 1, name: "I'm inactive", otherStuff: {}},
-      {id: 2, name: "No this is boring", otherStuff: {}}
-    ],
 
     events: {
       'app.activated':'index',
@@ -88,7 +76,7 @@
     addAllCondition: function(e) {
       e.preventDefault();
       this.allConditionsCounter += 1;
-      var fieldset = this.renderTemplate('all_condition_fieldset', {id: this.allConditionsCounter});
+      var fieldset = this.renderTemplate('condition_fieldset', {condition_prefix: 'all', id: this.allConditionsCounter});
       this.$('#all_conditions').append(fieldset);
     },
 
@@ -100,7 +88,7 @@
     addAnyCondition: function(e) {
       e.preventDefault();
       this.anyConditionsCounter += 1;
-      var fieldset = this.renderTemplate('any_condition_fieldset', {id: this.anyConditionsCounter});
+      var fieldset = this.renderTemplate('condition_fieldset', {condition_prefix: 'any', id: this.anyConditionsCounter});
       this.$('#any_conditions').append(fieldset);
     },
 
@@ -115,7 +103,7 @@
       var op_html = op_obj[0].html;
       var parent_id = this.$(target).parent().attr('id');
       var inserted = this.$(target).parent().children(".op_and_value").html(op_html);
-      if (current_option == 'requester_id' || current_option == 'assignee_id') {
+      if (current_option == 'requester_id' || current_option == 'assignee_id' || current_option == 'user_id') {
         this.$(inserted).children("input.op_val").addClass('autocomplete_user');
         this.autocompleteRequesterName(parent_id);
       }
